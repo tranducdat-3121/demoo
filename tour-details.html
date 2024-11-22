@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chi Tiết Tour</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Du Lịch Việt</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="login.html" id="loginLink">Đăng nhập</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Chi tiết Tour -->
+    <section id="tour-detail">
+        <div class="tour-detail-container">
+            <img id="tour-image" alt="Tour">
+            <div class="tour-detail-info">
+                <h2 id="tour-title"></h2>
+                <p id="tour-description"></p>
+                <h3 id="tour-price"></h3>
+                
+                <!-- Dropdown chọn phương tiện đi lại -->
+                <label for="transport">Chọn phương tiện đi lại:</label>
+                <select id="transport">
+                    <option value="0">Máy bay</option>
+                    <option value="1">Tàu hỏa</option>
+                    <option value="2">Xe khách</option>
+                    <option value="3">Ô tô thuê riêng</option>
+                </select>
+
+                <button class="btn-book" id="bookNowBtn">Đặt vé ngay</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Đặt Vé (ẩn mặc định) -->
+    <section id="booking" style="display: none;">
+        <h2>Điền Thông Tin Đặt Vé</h2>
+        <form id="bookingForm">
+            <label for="fullName">Họ và tên:</label>
+            <input type="text" id="fullName" name="fullName" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="phone">Số điện thoại:</label>
+            <input type="text" id="phone" name="phone" required><br><br>
+
+            <label for="tourDate">Ngày khởi hành:</label>
+            <input type="date" id="tourDate" name="tourDate" required><br><br>
+
+            <label for="numberOfPeople">Số lượng người:</label>
+            <input type="number" id="numberOfPeople" name="numberOfPeople" required><br><br>
+
+            <button type="submit">Xác nhận Đặt Vé</button>
+        </form>
+    </section>
+
+    <script>
+        // Danh sách thông tin các tour
+        const tours = {
+            "1": {
+                title: "Tour Hà Nội - Sapa",
+                description: "Khám phá vẻ đẹp thiên nhiên miền Bắc với lịch trình 3 ngày 2 đêm. Tour bao gồm các điểm đến nổi tiếng như Fansipan, thung lũng Mường Hoa...",
+                price: "2,500,000 VND",
+                image: "cli/HN-SP.webp",
+                basePrice: 2500000 // giá cơ bản
+            },
+            "2": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "3": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "4": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "5": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "6": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "7": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "8": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "9": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "10": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "11": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            "12": {
+                title: "Tour Hồ Chí Minh - Phú Quốc",
+                description: "Thưởng thức biển xanh và cát trắng tại hòn đảo ngọc Phú Quốc cực đẹp quý khách có thể chiêm ngưỡng từ trên xuống phía dưới.",
+                price: "3,000,000 VND",
+                image: "cli/HCM-PQ.webp",
+                basePrice: 3000000
+            },
+            // Thêm các tour khác tương tự...
+        };
+
+        // Lấy ID từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tourId = urlParams.get("id");
+
+        // Hiển thị thông tin tour tương ứng
+        if (tours[tourId]) {
+            const tour = tours[tourId];
+            document.getElementById("tour-title").innerText = tour.title;
+            document.getElementById("tour-description").innerText = tour.description;
+            document.getElementById("tour-price").innerText = `Giá: ${tour.price}`;
+            document.getElementById("tour-image").src = tour.image;
+
+            // Lắng nghe sự kiện thay đổi phương tiện
+            document.getElementById("transport").addEventListener("change", function() {
+                let transportCost = 0;
+                const transportType = this.value;
+
+                // Thêm giá tiền dựa trên phương tiện
+                if (transportType == "0") {
+                    transportCost = 500000; // Máy bay
+                } else if (transportType == "1") {
+                    transportCost = 200000; // Tàu hỏa
+                } else if (transportType == "2") {
+                    transportCost = 100000; // Xe khách
+                } else if (transportType == "3") {
+                    transportCost = 1000000; // Ô tô thuê riêng
+                }
+
+                // Tính tổng giá
+                const totalPrice = tour.basePrice + transportCost;
+                document.getElementById("tour-price").innerText = `Giá: ${totalPrice.toLocaleString()} VND`;
+            });
+            
+        } else {
+            document.getElementById("tour-detail").innerHTML = "<h2>Tour không tồn tại</h2>";
+        }
+
+        // Xử lý nút "Đặt vé ngay"
+        document.getElementById("bookNowBtn").addEventListener("click", function () {
+            document.getElementById("tour-detail").style.display = "none";
+            document.getElementById("booking").style.display = "block";
+        });
+
+        // Xử lý form đặt vé
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Lấy thông tin từ form
+            const fullName = document.getElementById("fullName").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const tourDate = document.getElementById("tourDate").value;
+            const numberOfPeople = document.getElementById("numberOfPeople").value;
+            const transport = document.getElementById("transport").value;
+            const transportCost = transport === "0" ? 500000 : (transport === "1" ? 200000 : (transport === "2" ? 100000 : 1000000));
+            const totalPrice = tours[tourId].basePrice + transportCost;
+
+            // Tạo đối tượng thông tin đặt vé
+            const bookingInfo = {
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                tourDate: tourDate,
+                numberOfPeople: numberOfPeople,
+                transport: transport,
+                totalPrice: totalPrice
+            };
+
+            // Lưu vào localStorage
+            let registeredTours = JSON.parse(localStorage.getItem('registeredTours')) || [];
+            registeredTours.push(bookingInfo);
+            localStorage.setItem('registeredTours', JSON.stringify(registeredTours));
+
+            // Thông báo và chuyển hướng
+            alert("Cảm ơn bạn đã đặt vé!");
+            window.location.href = "thanks.html";
+        });
+
+        // Kiểm tra nếu người dùng đã đăng nhập và ẩn "Đăng nhập" nếu đã đăng nhập
+        window.onload = function() {
+            var username = sessionStorage.getItem('username');
+            if (username) {
+                document.getElementById('loginLink').style.display = 'none';  // Ẩn "Đăng nhập" nếu người dùng đã đăng nhập
+            }
+        };
+    </script>
+</body> 
+</html>
